@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "New Tab at Top",
   "version": "1.0.0",
-  "description": "Opens new tabs at the top of the unpinned/ungrouped tab list, below tab groups and pinned tabs.",
+  "description": "Opens new tabs at the top of vertical side bar",
   "permissions": [
     "tabs",
     "tabGroups"
