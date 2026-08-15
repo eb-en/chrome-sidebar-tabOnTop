@@ -6,24 +6,25 @@ chrome.tabs.onCreated.addListener((tab) => {
     return;
   }
 
-  // Query all tabs in the current window to find the lowest boundary
-  // below which all pinned and grouped tabs sit at the top
+  // Query all tabs in the current window to find the pinned tabs boundary
   chrome.tabs.query({ windowId: tab.windowId }, (allTabs) => {
-    if (chrome.runtime.lastError) {
+    if (chrome.runtime.lastError || !allTabs) {
       return;
     }
 
-    // Tabs are returned in index order; find the last pinned/grouped tab index
-    let lastSectionedIndex = -1;
+    // Find the last pinned tab index (pinned tabs sit at the very top, indices 0..N)
+    let lastPinnedIndex = -1;
     for (const t of allTabs) {
-      if (t.pinned || t.groupId !== NO_GROUP_ID) {
-        lastSectionedIndex = t.index;
+      if (t.pinned) {
+        lastPinnedIndex = t.index;
+      } else {
+        break;
       }
     }
 
-    const targetIndex = lastSectionedIndex + 1;
+    const targetIndex = lastPinnedIndex + 1;
 
-    // Move tab to the top of the ungrouped/unpinned section
+    // Move tab to index 0 (or immediately after pinned tabs)
     if (tab.index !== targetIndex) {
       chrome.tabs.move(tab.id, { index: targetIndex }, () => {
         if (chrome.runtime.lastError) {
