@@ -41,7 +41,3 @@ The extension requests two permissions:
 
 - **`tabs`** — required to read tab properties (pin state, group membership) and move tabs.
 - **`tabGroups`** — required to detect whether a tab belongs to a tab group.
-
-## License
-
-MIT
